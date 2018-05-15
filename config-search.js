@@ -10,7 +10,7 @@ module.exports =  [
         color: 'green'
     },
     {
-        string: 'germknoel',
+        string: 'germknodel',
         color: 'orange'
     },
     {
