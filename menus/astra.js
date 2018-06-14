@@ -7,7 +7,7 @@ const Q = require('q');
 const moment = require('moment');
 
 const config = {
-    url: 'http://buddies.sk/denne-menu/'
+    url: 'https://restauracie.sme.sk/restauracia/astra_153-ruzinov_2980/denne-menu'
 };
 
 const get = () => {
@@ -34,11 +34,9 @@ const get = () => {
 
                 let result = [];
 
-                moment.locale("sk");
-
-                body = _.split(body, moment().format('dddd').toUpperCase())[1];
-                body = _.split(body, '<p class="bodytext">')[0];
-                body = _.split(_.replace(body, '&nbsp;', ' '), '</p>');
+                 body = _.last(_.split(body, moment().format('DD.MM.YYYY')));
+                 body = _.first(_.split(body, '<h2>'));
+                 body = _.split(body, '\n');
 
                 _.each(body, (row) => {
 
@@ -58,6 +56,7 @@ const get = () => {
 
                     if (/[0-9]{3}g/g.test(row)) {
 
+                        row = _.last(_.split(row,': '));
                         row = _.split(row, ' ');
                         row.shift();
                         row = _.join(row, ' ');
@@ -67,6 +66,7 @@ const get = () => {
                             type: 'meal'
                         })
                     }
+
 
                 });
 

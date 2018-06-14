@@ -1,7 +1,5 @@
 'use strict';
 
-const commandLineArgs = require('command-line-args');
-
 const chalk = require('chalk');
 const _ = require('lodash');
 const async = require('async');
@@ -14,9 +12,12 @@ const MenuLanogi = require('./menus/lanogi');
 const MenuPrestoB5 = require('./menus/presto-b-5');
 const MenuPrestoBBC1 = require('./menus/presto-b-b-c-1');
 const MenuBuddies = require('./menus/buddies');
+const MenuJournal = require('./menus/journal');
+const MenuDelfin = require('./menus/delfin');
+const MenuAstra = require('./menus/astra');
 
 
-const spinnersConfig = ['Lanogi', 'PrestoB5', 'PrestoBBC1', 'Buddies'];
+const spinnersConfig = ['Lanogi', 'PrestoB5', 'PrestoBBC1', 'Buddies', 'Journal', 'Delfin', 'Astra'];
 const spinners = new Multispinner(spinnersConfig);
 
 
@@ -84,6 +85,52 @@ async.parallel({
 
         });
 
+    },
+
+    Journal: (callback) => {
+
+        MenuJournal.get().then((result) => {
+
+            spinners.success('Journal');
+            callback(null, result);
+
+        }).catch((error) => {
+
+            spinners.error('Journal');
+            callback(error);
+
+        });
+
+    },
+
+    Delfin: (callback) => {
+
+        MenuDelfin.get().then((result) => {
+
+            spinners.success('Delfin');
+            callback(null, result);
+
+        }).catch((error) => {
+
+            spinners.error('Delfin');
+            callback(error);
+
+        });
+    },
+
+    Astra: (callback) => {
+
+        MenuAstra.get().then((result) => {
+
+            spinners.success('Astra');
+            callback(null, result);
+
+        }).catch((error) => {
+
+            spinners.error('Astra');
+            callback(error);
+
+        });
     }
 
 }, (error, results) => {
@@ -102,6 +149,7 @@ async.parallel({
             color = (source === 'PrestoB5') ? 'yellow' : color;
             color = (source === 'PrestoBBC1') ? 'cyan' : color;
             color = (source === 'Lanogi') ? 'magenta' : color;
+            color = (source === 'Journal') ? 'blue' : color;
 
             _.each(items, (row) => {
 
@@ -117,10 +165,10 @@ async.parallel({
 
                 _.each(ConfigSearch || [], (s) => {
 
-                    if (text.indexOf(s.string) >= 0) {
-                        text = _.replace(text, s.string, chalk[s.color](s.string));
-                        setTop = true;
-                    }
+                    // if (text.indexOf(s.string) >= 0) {
+                    //     text = _.replace(text, s.string, chalk[s.color](s.string));
+                    //     setTop = true;
+                    // }
 
                 });
 
@@ -138,7 +186,7 @@ async.parallel({
 
             });
 
-            if(_.size(items) > 0){
+            if (_.size(items) > 0) {
                 console.log(` `);
             }
 
@@ -148,7 +196,7 @@ async.parallel({
 
         _.each(top, (item) => {
             console.log(`${chalk.red('[ TOP ]')}${item.text}`);
-        })
+        });
 
         console.log(`${chalk.white(_.pad('', 25, '-'))}`);
 

@@ -7,7 +7,7 @@ const Q = require('q');
 const moment = require('moment');
 
 const config = {
-    url: 'http://buddies.sk/denne-menu/'
+    url: 'http://restauraciadelfin.sk/aktualne-denne-menu'
 };
 
 const get = () => {
@@ -37,36 +37,30 @@ const get = () => {
                 moment.locale("sk");
 
                 body = _.split(body, moment().format('dddd').toUpperCase())[1];
-                body = _.split(body, '<p class="bodytext">')[0];
-                body = _.split(_.replace(body, '&nbsp;', ' '), '</p>');
+                body = _.split(body, '<br></p>')[0];
+                body = _.split(body, '<br></style>')[1];
+                body = _.split(_.replace(body, /&nbsp;/g, ' '), '<br>');
 
-                _.each(body, (row) => {
+                _.each(body, (row, key) => {
 
-                    row = _.trim(row);
+                    row = _.replace(row, /&nbsp;/g, ' ');
+                    row = _.replace(row, /\r\n/g, ' ');
 
-                    if (/[0-9],[0-9]{2}l/g.test(row)) {
+                    if (key === 0) {
 
-                        row = _.split(row, ' ');
-                        row.shift();
-                        row = _.join(row, ' ');
-
-                        result.push({
+                        return result.push({
                             name: row,
                             type: 'soup'
-                        })
+                        });
+
                     }
 
-                    if (/[0-9]{3}g/g.test(row)) {
+                     row = _.split(row, '. ')[1];
 
-                        row = _.split(row, ' ');
-                        row.shift();
-                        row = _.join(row, ' ');
-
-                        result.push({
-                            name: row,
-                            type: 'meal'
-                        })
-                    }
+                     result.push({
+                        name: row,
+                        type: 'meal'
+                    });
 
                 });
 

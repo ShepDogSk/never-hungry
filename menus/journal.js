@@ -7,7 +7,7 @@ const Q = require('q');
 const moment = require('moment');
 
 const config = {
-    url: 'http://buddies.sk/denne-menu/'
+    url: 'http://www.journalrestaurant.sk/#menu'
 };
 
 const get = () => {
@@ -36,17 +36,19 @@ const get = () => {
 
                 moment.locale("sk");
 
-                body = _.split(body, moment().format('dddd').toUpperCase())[1];
-                body = _.split(body, '<p class="bodytext">')[0];
-                body = _.split(_.replace(body, '&nbsp;', ' '), '</p>');
+                body = _.split(body, moment().format('D.M.YYYY'))[1];
+                body = _.split(body, '<h3>')[0];
+
+                body = _.split(body, '</p><p>');
 
                 _.each(body, (row) => {
 
-                    row = _.trim(row);
+                    if (/[0-9],[0-9]{2} l/g.test(row)) {
+                        //
+                        row = _.split(row, '\t\t')[0];
+                        row = _.replace(row, /\t/g, ' ');
 
-                    if (/[0-9],[0-9]{2}l/g.test(row)) {
-
-                        row = _.split(row, ' ');
+                        row = _.split(row, 'l ');
                         row.shift();
                         row = _.join(row, ' ');
 
@@ -57,6 +59,9 @@ const get = () => {
                     }
 
                     if (/[0-9]{3}g/g.test(row)) {
+
+                        row = _.split(row, '\t\t')[0];
+                        row = _.replace(row, /\t/g, ' ');
 
                         row = _.split(row, ' ');
                         row.shift();
