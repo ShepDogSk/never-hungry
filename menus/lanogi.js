@@ -41,7 +41,6 @@ const get = () => {
                 body = _.trim(striptags(body));
                 body = _.split(body, '\n');
 
-
                 _.each(body, (row) => {
 
                     if (/[0-9],[0-9]{2}l/g.test(row)) {
@@ -57,7 +56,7 @@ const get = () => {
                         })
                     }
 
-                    if (/[A-Z]:[0-9]{3}/g.test(row)) {
+                    if (/[A-Z]:[0-9]{3}|[A-Z]: [0-9]{3}/g.test(row)) {
 
                         row = _.split(row, ' ');
                         row.shift();
