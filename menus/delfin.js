@@ -38,29 +38,31 @@ const get = () => {
 
                 body = _.split(body, moment().format('dddd').toUpperCase())[1];
                 body = _.split(body, '<br></p>')[0];
-                body = _.split(body, '<br></style>')[1];
-                body = _.split(_.replace(body, /&nbsp;/g, ' '), '<br>');
 
+                body = _.split(body, '<br>');
+                body = _.compact(_.first(_.chunk(body, 7)));
+                
                 _.each(body, (row, key) => {
 
                     row = _.replace(row, /&nbsp;/g, ' ');
                     row = _.replace(row, /\r\n/g, ' ');
 
-                    if (key === 0) {
+                    if (key === 1) {
 
                         return result.push({
                             name: row,
                             type: 'soup'
                         });
 
+                    } else if (key > 1) {
+
+                        row = _.split(row, '. ')[1];
+
+                        result.push({
+                            name: row,
+                            type: 'meal'
+                        });
                     }
-
-                     row = _.split(row, '. ')[1];
-
-                     result.push({
-                        name: row,
-                        type: 'meal'
-                    });
 
                 });
 

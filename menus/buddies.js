@@ -38,7 +38,7 @@ const get = () => {
 
                 body = _.split(body, moment().format('dddd').toUpperCase())[1];
                 body = _.split(body, '<p class="bodytext">')[0];
-                body = _.split(_.replace(body, '&nbsp;', ' '), '</p>');
+                body = _.split(_.replace(body, /&nbsp;/g, ' '), '</p>');
 
                 _.each(body, (row) => {
 
